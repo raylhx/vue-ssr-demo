@@ -3,7 +3,6 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
-
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
@@ -17,7 +16,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'public': path.resolve(__dirname, '../public')
+      'public': path.resolve(__dirname, '../public'),
+      '~': path.resolve(__dirname, 'src/')
     }
   },
   module: {
@@ -46,7 +46,7 @@ module.exports = {
         }
       },
       {
-        test: /\.styl(us)?$/,
+        test: /\.scss?$/,
         use: isProd
           ? ExtractTextPlugin.extract({
               use: [
@@ -54,11 +54,11 @@ module.exports = {
                   loader: 'css-loader',
                   options: { minimize: true }
                 },
-                'stylus-loader'
+                'sass-loader'
               ],
               fallback: 'vue-style-loader'
             })
-          : ['vue-style-loader', 'css-loader', 'stylus-loader']
+          : ['vue-style-loader', 'css-loader', 'sass-loader']
       },
     ]
   },

@@ -15,16 +15,14 @@ const readFile = (fs, file) => {
 module.exports = function setupDevServer (app, templatePath, cb) {
   let bundle
   let template
-  let clientManifest
 
   let ready
   const readyPromise = new Promise(r => { ready = r })
   const update = () => {
-    if (bundle && clientManifest) {
+    if (bundle) {
       ready()
       cb(bundle, {
         template,
-        clientManifest
       })
     }
   }
@@ -57,10 +55,6 @@ module.exports = function setupDevServer (app, templatePath, cb) {
     stats.errors.forEach(err => console.error(err))
     stats.warnings.forEach(err => console.warn(err))
     if (stats.errors.length) return
-    clientManifest = JSON.parse(readFile(
-      devMiddleware.fileSystem,
-      'vue-ssr-client-manifest.json'
-    ))
     update()
   })
 

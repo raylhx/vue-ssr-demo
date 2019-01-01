@@ -3,19 +3,21 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const test = () => import('../views/test.vue')
-
+const list = () => import('../views/list.vue')
 export function createRouter () {
   return new Router({
     mode: 'history',
     fallback: false,
     scrollBehavior: () => ({ y: 0 }),
     routes: [
-      { 
-        path: '/test', 
-        component: test,
-        name: 'test'
-      },
+      {
+        path: '/:id',
+        component: list,
+        name: 'list'
+      },{
+        path: '/',
+        redirect: '/index'
+      }
     ]
   })
 }

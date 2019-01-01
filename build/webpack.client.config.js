@@ -3,7 +3,7 @@ const merge = require('webpack-merge')
 const base = require('./webpack.base.config')
 const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
-
+var px2rem = require('postcss-plugin-px2rem');
 const config = merge(base, {
   entry: {
     app: './src/entry-client.js'
@@ -12,6 +12,14 @@ const config = merge(base, {
     alias: {
       'create-api': './create-api-client.js'
     }
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.css$/,
+        loader: "style-loader!css-loader!postcss-loader"
+      }
+    ]
   },
   plugins: [
     // strip dev-only code in Vue source
@@ -31,11 +39,6 @@ const config = merge(base, {
           !/\.css$/.test(module.request)
         )
       }
-    }),
-    // extract webpack runtime & manifest to avoid vendor chunk hash changing
-    // on every build.
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest'
     }),
     new VueSSRClientPlugin()
   ]
